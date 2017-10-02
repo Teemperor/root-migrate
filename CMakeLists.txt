@@ -14,6 +14,8 @@ else()
   find_package(Clang 5.0 REQUIRED)
 endif()
 
+find_package(Threads)
+
 link_directories(${LLVM_PATH}/lib)
 include_directories(${LLVM_PATH}/include)
 
@@ -32,4 +34,34 @@ add_definitions(${LLVM_DEFINITIONS})
 add_executable(simple-tool main.cpp)
 
 # Link against LLVM libraries
-target_link_libraries(simple-tool clangTooling)
+target_link_libraries(simple-tool
+  clangAnalysis
+  clangARCMigrate
+  clangAST
+  clangASTMatchers
+  clangBasic
+  clangCodeGen
+  clangDriver
+  clangDynamicASTMatchers
+  clangEdit
+  clangFormat
+  clangFrontend
+  clangFrontendTool
+  clangIndex
+  clangLex
+  clangParse
+  clangRewrite
+  clangRewriteFrontend
+  clangSema
+  clangSerialization
+  clangStaticAnalyzerCheckers
+  clangStaticAnalyzerCore
+  clangStaticAnalyzerFrontend
+  clangTooling
+  clangToolingCore
+  clangToolingRefactor
+
+  LLVMSupport
+  ${CMAKE_THREAD_LIBS_INIT}
+  ncurses
+)
