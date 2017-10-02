@@ -3,8 +3,8 @@ project(ifcount)
 
 set (CMAKE_CXX_STANDARD 11)
 
-find_package(LLVM REQUIRED)
-find_package(Clang REQUIRED)
+find_package(LLVM 5.0 REQUIRED)
+find_package(Clang 5.0 REQUIRED)
 
 link_directories(${LLVM_PATH}/lib)
 include_directories(${LLVM_PATH}/include)
