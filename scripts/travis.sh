@@ -6,5 +6,5 @@ cd "$DIR"
 cd ..
 mkdir build
 cd build
-cmake ..
+cmake -Dtravis_build=On ..
 make -j2

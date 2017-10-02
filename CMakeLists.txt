@@ -1,10 +1,17 @@
 cmake_minimum_required(VERSION 3.2)
 project(ifcount)
 
+option(travis_build "Used for building with travis" ON)
+
 set (CMAKE_CXX_STANDARD 11)
 
-find_package(LLVM 5.0 REQUIRED)
-find_package(Clang 5.0 REQUIRED)
+if(travis_build)
+  include_directories(/usr/lib/llvm-5.0/include/clang/)
+  link_directories(/usr/lib/llvm-5.0/lib/)
+else()
+  find_package(LLVM 5.0 REQUIRED)
+  find_package(Clang 5.0 REQUIRED)
+endif()
 
 link_directories(${LLVM_PATH}/lib)
 include_directories(${LLVM_PATH}/include)
