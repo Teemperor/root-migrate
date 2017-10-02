@@ -6,7 +6,7 @@ option(travis_build "Used for building with travis" ON)
 set (CMAKE_CXX_STANDARD 11)
 
 if(travis_build)
-  include_directories(/usr/lib/llvm-5.0/include/clang/)
+  include_directories(/usr/lib/llvm-5.0/include/)
   link_directories(/usr/lib/llvm-5.0/lib/)
 else()
   find_package(LLVM 5.0 REQUIRED)
