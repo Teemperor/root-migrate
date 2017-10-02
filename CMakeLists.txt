@@ -7,6 +7,7 @@ set (CMAKE_CXX_STANDARD 11)
 
 if(travis_build)
   include_directories(/usr/lib/llvm-5.0/include/)
+  include_directories(/usr/include/llvm-5.0/)
   link_directories(/usr/lib/llvm-5.0/lib/)
 else()
   find_package(LLVM 5.0 REQUIRED)
