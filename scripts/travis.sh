@@ -7,4 +7,4 @@ cd ..
 mkdir build
 cd build
 cmake -Dtravis_build=On ..
-make -j2
+make VERBOSE=1
