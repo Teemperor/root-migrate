@@ -10,8 +10,8 @@ matrix:
       compiler: gcc
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-6']
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0']
+          packages: ['g++-6', 'libclang-5.0-dev']
       env:
         - CXX=g++-6
         - CC=gcc-6
@@ -21,8 +21,8 @@ matrix:
       compiler: gcc
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-7']
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0']
+          packages: ['g++-7', 'libclang-5.0-dev']
       env:
         - CXX=g++-7
         - CC=gcc-7
@@ -32,8 +32,8 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-3.9']
-          packages: ['clang-3.9', 'g++-6']
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-3.9', 'llvm-toolchain-trusty-5.0']
+          packages: ['clang-3.9', 'g++-6', 'libclang-5.0-dev']
       env:
         - CXX=clang++-3.9
         - CC=clang-3.9
@@ -42,11 +42,21 @@ matrix:
       compiler: clang
       addons:
         apt:
-          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-4.0']
-          packages: ['clang-4.0', 'g++-6']
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-4.0', 'llvm-toolchain-trusty-5.0']
+          packages: ['clang-4.0', 'g++-6', 'libclang-5.0-dev']
       env:
         - CXX=clang++-4.0
         - CC=clang-4.0
+    - os: linux
+      dist: trusty
+      compiler: clang
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-4.0', 'llvm-toolchain-trusty-5.0']
+          packages: ['clang-5.0', 'g++-6', 'libclang-5.0-dev']
+      env:
+        - CXX=clang++-5.0
+        - CC=clang-5.0
 
 script:
   - ./scripts/travis.sh
