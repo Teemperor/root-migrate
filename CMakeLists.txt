@@ -40,6 +40,7 @@ target_link_libraries(${binary_name}
   clangTooling
   LLVM
   z
+  clangDynamicASTMatchers
   ${CMAKE_THREAD_LIBS_INIT}
   ncurses
 )

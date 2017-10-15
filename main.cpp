@@ -7,15 +7,12 @@
 
 #include "clang/ASTMatchers/ASTMatchers.h"
 #include "clang/ASTMatchers/ASTMatchFinder.h"
+#include "clang/ASTMatchers/Dynamic/Parser.h"
 
 using namespace clang;
 using namespace clang::ast_matchers;
 using namespace clang::tooling;
 using namespace llvm;
-
-StatementMatcher LoopMatcher =
-  forStmt(hasLoopInit(declStmt(hasSingleDecl(varDecl(
-    hasInitializer(integerLiteral(equals(0)))))))).bind("forLoop");
 
 class LoopPrinter : public MatchFinder::MatchCallback {
 public :
@@ -42,9 +39,18 @@ int main(int argc, const char **argv) {
   ClangTool Tool(OptionsParser.getCompilations(),
                  OptionsParser.getSourcePathList());
 
+  using namespace clang::ast_matchers::dynamic;
+
+  Diagnostics diags;
+
+  llvm::Optional<DynTypedMatcher> matcher = Parser::parseMatcherExpression(
+                 "forStmt(hasLoopInit(declStmt("
+                 "hasSingleDecl(varDecl(hasInitializer(integerLiteral(equals(0))"
+                 ")))))).bind(\"forLoop\")", &diags);
+
   LoopPrinter Printer;
   MatchFinder Finder;
-  Finder.addMatcher(LoopMatcher, &Printer);
+  Finder.addDynamicMatcher(*matcher, &Printer);
 
   return Tool.run(newFrontendActionFactory(&Finder).get());
 }
