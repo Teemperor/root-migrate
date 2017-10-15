@@ -9,9 +9,9 @@ cd ..
 rm -rf build
 mkdir build
 cd build
-cmake -DLLVM_COV=On ..
+cmake -DLLVM_COV=On -DCMAKE_BUILD_TYPE=Debug ..
 make
-ctest -j2
+ctest --output-on-failure
 
 llvm-profdata merge -sparse migrate.profraw -o migrate.profdata
 llvm-cov show ./migrate -instr-profile=migrate.profdata

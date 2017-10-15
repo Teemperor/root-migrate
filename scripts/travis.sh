@@ -9,6 +9,6 @@ cd ..
 rm -rf build
 mkdir build
 cd build
-cmake ..
+cmake -DCMAKE_BUILD_TYPE=Debug ..
 make
-ctest -j2
+ctest -j2 --output-on-failure

@@ -19,4 +19,4 @@ echo "project(test_$test_filename)"  > CMakeLists.txt
 echo "add_library(t OBJECT $test_file)" >> CMakeLists.txt
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=On .
 
-LLVM_PROFILE_FILE="$cov_dir/migrate.profraw" "$binary_name" -p . "$test_file"
+LLVM_PROFILE_FILE="$cov_dir/migrate.profraw" valgrind --error-exitcode=1 "$binary_name" -p . "$test_file"
