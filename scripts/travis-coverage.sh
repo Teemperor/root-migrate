@@ -14,8 +14,8 @@ make
 ctest -j2
 
 llvm-profdata merge -sparse migrate.profraw -o migrate.profdata
-llvm-cov show ./simple-tool -instr-profile=migrate.profdata
-cov_percent=`llvm-cov report ./simple-tool -instr-profile=migrate.profdata | grep "^TOTAL " | awk '{print $13}'`
+llvm-cov show ./migrate -instr-profile=migrate.profdata
+cov_percent=`llvm-cov report ./migrate -instr-profile=migrate.profdata | grep "^TOTAL " | awk '{print $13}'`
 
 if [ "$cov_percent" != "100.00%" ]; then
   echo "Coverage decreased $cov_percent"

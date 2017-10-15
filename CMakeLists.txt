@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(ifcount)
+project(root-migrate)
 
 option(travis_build "Used for building with travis" OFF)
 
@@ -29,11 +29,13 @@ message(STATUS "LLVM definitions: ${LLVM_DEFINITIONS}")
 include_directories(${LLVM_INCLUDE_DIRS})
 add_definitions(${LLVM_DEFINITIONS} -fno-rtti -fno-exceptions)
 
+set(binary_name migrate)
+
 # Now build our tools
-add_executable(simple-tool main.cpp)
+add_executable(${binary_name} main.cpp)
 
 # Link against LLVM libraries
-target_link_libraries(simple-tool
+target_link_libraries(${binary_name}
   clang
   clangTooling
   LLVM
@@ -48,7 +50,7 @@ foreach(test_file ${test_files})
   get_filename_component(test_name "${test_file}" NAME_WE)
   add_test(NAME test_name
            COMMAND "${CMAKE_SOURCE_DIR}/scripts/run_test.sh"
-                   "${CMAKE_BINARY_DIR}/simple-tool"
+                   "${CMAKE_BINARY_DIR}/${binary_name}"
                    "${test_file}"
                    "${CMAKE_BINARY_DIR}"
            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}")
