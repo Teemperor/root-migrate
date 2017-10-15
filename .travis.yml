@@ -13,9 +13,6 @@ compiler:
 notifications:
   email: false
 
-env:
-  - ARCH_TRAVIS_CONFIRM_YES=1
-
 arch:
   packages:
     - cmake
