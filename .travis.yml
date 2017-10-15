@@ -18,7 +18,8 @@ arch:
     - llvm-libs
     - llvm
   script:
-    - ./scripts/travis.sh
+    - CC=clang CXX=clang++ ./scripts/travis-coverage.sh
+    - CC=gcc CXX=g++ ./scripts/travis.sh
 
 script:
   - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"

@@ -12,6 +12,10 @@ include_directories(${LLVM_PATH}/include)
 
 find_package(Threads)
 
+option(LLVM_COV "Collect coverage" OFF)
+if(LLVM_COV)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
+endif()
 
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
@@ -37,3 +41,15 @@ target_link_libraries(simple-tool
   ${CMAKE_THREAD_LIBS_INIT}
   ncurses
 )
+
+enable_testing()
+file(GLOB test_files "tests/*.cpp")
+foreach(test_file ${test_files})
+  get_filename_component(test_name "${test_file}" NAME_WE)
+  add_test(NAME test_name
+           COMMAND "${CMAKE_SOURCE_DIR}/scripts/run_test.sh"
+                   "${CMAKE_BINARY_DIR}/simple-tool"
+                   "${test_file}"
+                   "${CMAKE_BINARY_DIR}"
+           WORKING_DIRECTORY "${CMAKE_BINARY_DIR}")
+endforeach()

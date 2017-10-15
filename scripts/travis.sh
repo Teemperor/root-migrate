@@ -6,8 +6,9 @@ set -e
 
 cd "$DIR"
 cd ..
+rm -rf build
 mkdir build
 cd build
-cmake -Dtravis_build=On ..
-make VERBOSE=1
-./simple-tool --help
+cmake ..
+make
+ctest -j2
