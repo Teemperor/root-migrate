@@ -4,6 +4,12 @@ branches:
   only:
     - master
 
+language: c++
+
+compiler:
+  - gcc
+  - clang
+
 notifications:
   email: false
 
@@ -18,8 +24,8 @@ arch:
     - llvm-libs
     - llvm
   script:
-    - CC=clang CXX=clang++ ./scripts/travis-coverage.sh
-    - CC=gcc CXX=g++ ./scripts/travis.sh
+    - if [ "$CXX" = "g++" ]; then ./scripts/travis.sh; fi
+    - if [ "$CXX" = "clang++" ]; then ./scripts/travis-coverage.sh; fi
 
 script:
   - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
