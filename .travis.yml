@@ -20,6 +20,7 @@ arch:
     - clang-tools-extra
     - llvm-libs
     - llvm
+    - valgrind
   script:
     - if [ "$CXX" = "g++" ]; then ./scripts/travis.sh; fi
     - if [ "$CXX" = "clang++" ]; then ./scripts/travis-coverage.sh; fi

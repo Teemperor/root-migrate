@@ -8,6 +8,7 @@
 #include "clang/ASTMatchers/ASTMatchers.h"
 #include "clang/ASTMatchers/ASTMatchFinder.h"
 #include "clang/ASTMatchers/Dynamic/Parser.h"
+#include "clang/Rewrite/Core/Rewriter.h"
 
 using namespace clang;
 using namespace clang::ast_matchers;
@@ -16,9 +17,17 @@ using namespace llvm;
 
 class LoopPrinter : public MatchFinder::MatchCallback {
 public :
+  SourceManager *SourceMgr;
+  Rewriter *R = nullptr;
+
   virtual void run(const MatchFinder::MatchResult &Result) {
-    if (const ForStmt *FS = Result.Nodes.getNodeAs<clang::ForStmt>("forLoop"))
-      FS->dump();
+    SourceMgr = &Result.Context->getSourceManager();
+    if(!R) {
+      R = new Rewriter(*SourceMgr, Result.Context->getLangOpts());
+    }
+    if (const ForStmt *FS = Result.Nodes.getNodeAs<clang::ForStmt>("forLoop")) {
+        R->ReplaceText(FS->getSourceRange(), "foo");
+    }
   }
 };
 
@@ -33,6 +42,25 @@ static cl::extrahelp CommonHelp(CommonOptionsParser::HelpMessage);
 
 // A help message for this specific tool can be added afterwards.
 static cl::extrahelp MoreHelp("\nMore help text...");
+
+class WriteOutCallback : public SourceFileCallbacks {
+public:
+  WriteOutCallback(LoopPrinter &P) : Printer(P) {
+  }
+
+  LoopPrinter &Printer;
+
+  virtual bool handleBeginSource(CompilerInstance &CI) {
+    return true;
+  }
+
+  virtual void handleEndSource() {
+    const RewriteBuffer *RewriteBuf =
+          Printer.R->getRewriteBufferFor(Printer.SourceMgr->getMainFileID());
+    if (RewriteBuf)
+      llvm::outs() << std::string(RewriteBuf->begin(), RewriteBuf->end());
+  }
+};
 
 int main(int argc, const char **argv) {
   CommonOptionsParser OptionsParser(argc, argv, MyToolCategory);
@@ -52,5 +80,7 @@ int main(int argc, const char **argv) {
   MatchFinder Finder;
   Finder.addDynamicMatcher(*matcher, &Printer);
 
-  return Tool.run(newFrontendActionFactory(&Finder).get());
+  WriteOutCallback CB(Printer);
+
+  return Tool.run(newFrontendActionFactory(&Finder, &CB).get());
 }
