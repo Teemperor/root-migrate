@@ -29,13 +29,18 @@ message(STATUS "LLVM definitions: ${LLVM_DEFINITIONS}")
 include_directories(${LLVM_INCLUDE_DIRS})
 add_definitions(${LLVM_DEFINITIONS} -fno-rtti -fno-exceptions)
 
-set(binary_name migrate)
+include_directories(include)
+
+add_subdirectory(lib)
+
+set(binary_name root-migrate)
 
 # Now build our tools
 add_executable(${binary_name} main.cpp)
 
 # Link against LLVM libraries
 target_link_libraries(${binary_name}
+  migrate
   clang
   clangTooling
   LLVM
@@ -56,3 +61,5 @@ foreach(test_file ${test_files})
                    "${CMAKE_BINARY_DIR}"
            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}")
 endforeach()
+
+add_subdirectory(unittests)
