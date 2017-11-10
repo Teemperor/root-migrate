@@ -3,21 +3,17 @@
 
 #include <string>
 
-class Variable
-{
+class Variable {
   std::string Name;
   std::string Code;
+
 public:
   Variable() = default;
-  Variable(const std::string& Name, const std::string& Code);
+  Variable(const std::string &Name, const std::string &Code);
 
-  const std::string &getName() const {
-      return Name;
-  }
+  const std::string &getName() const { return Name; }
 
-  const std::string& getCode() const {
-      return Code;
-  }
+  const std::string &getCode() const { return Code; }
 };
 
 #endif // VARIABLE_H

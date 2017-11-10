@@ -8,17 +8,17 @@
 
 #include <memory>
 
-class Upgrade
-{
+class Upgrade {
   std::string Replacement;
 
 public:
   llvm::Optional<clang::ast_matchers::dynamic::DynTypedMatcher> Matcher;
-  Upgrade(llvm::StringRef MatcherText, llvm::StringRef Replacement, clang::ast_matchers::dynamic::Diagnostics &Diags);
+  Upgrade(llvm::StringRef MatcherText, llvm::StringRef Replacement,
+          clang::ast_matchers::dynamic::Diagnostics &Diags);
 
   typedef std::map<std::string, Variable> VariableMap;
 
-  std::string getReplacement(const VariableMap& Variables);
+  std::string getReplacement(const VariableMap &Variables);
 };
 
 #endif // UPGRADE_H

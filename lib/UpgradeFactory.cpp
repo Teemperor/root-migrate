@@ -3,12 +3,11 @@
 #include <fstream>
 #include <sstream>
 
-UpgradeFactory::UpgradeFactory()
-{
+UpgradeFactory::UpgradeFactory() {}
 
-}
-
-std::unique_ptr<Upgrade> UpgradeFactory::fromFile(const std::string &Path, clang::ast_matchers::dynamic::Diagnostics &Diags) {
+std::unique_ptr<Upgrade>
+UpgradeFactory::fromFile(const std::string &Path,
+                         clang::ast_matchers::dynamic::Diagnostics &Diags) {
   assert(!Path.empty() && "File path is empty?");
   std::ifstream UpgradeFile(Path);
   std::stringstream Content;
@@ -16,7 +15,9 @@ std::unique_ptr<Upgrade> UpgradeFactory::fromFile(const std::string &Path, clang
   return fromString(Content.str(), Diags);
 }
 
-std::unique_ptr<Upgrade> UpgradeFactory::fromString(const std::string &Content, clang::ast_matchers::dynamic::Diagnostics &Diags) {
+std::unique_ptr<Upgrade>
+UpgradeFactory::fromString(const std::string &Content,
+                           clang::ast_matchers::dynamic::Diagnostics &Diags) {
   std::istringstream stream(Content);
   std::string line;
 
@@ -35,6 +36,7 @@ std::unique_ptr<Upgrade> UpgradeFactory::fromString(const std::string &Content, 
     }
   }
 
-  std::unique_ptr<Upgrade>Result(new Upgrade(MatcherCode.str() + ".bind(\"all\")", Replacement.str(), Diags));
+  std::unique_ptr<Upgrade> Result(new Upgrade(
+      MatcherCode.str() + ".bind(\"all\")", Replacement.str(), Diags));
   return Result;
 }
