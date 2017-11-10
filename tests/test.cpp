@@ -1,4 +1,9 @@
 
+class TFile {
+public:
+  static TFile* open(const char* path);
+};
+
 int main() {
-  for(int i = 0; i < 10; i++) {}
+  TFile* F = TFile::open("file.root");
 }
