@@ -2,6 +2,8 @@
 
 set -e
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 binary_name="$1"
 test_file="$2"
 cov_dir="$3"
@@ -21,3 +23,5 @@ echo "add_library(t OBJECT $our_test_file)" >> CMakeLists.txt
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=On .
 
 LLVM_PROFILE_FILE="$cov_dir/migrate.profraw" valgrind --error-exitcode=1 "$binary_name" -u "$test_file.upgrader" -p . "$our_test_file"
+
+"$DIR/compare_output.py" "$test_file.expected" "$our_test_file"
