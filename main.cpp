@@ -36,8 +36,9 @@ public :
      std::string NodeName = node.first;
      std::string Code;
      if (const Stmt *FS = Result.Nodes.getNodeAs<clang::Stmt>(NodeName)) {
-       const char* start = SourceMgr->getCharacterData(FS->getLocStart());
-       const char* end = SourceMgr->getCharacterData(FS->getLocEnd());
+
+       const char* start = SourceMgr->getCharacterData(FS->getBeginLoc());
+       const char* end = SourceMgr->getCharacterData(FS->getEndLoc());
        Code = std::string(start, (end - start + 1)/sizeof(char));
      }
      llvm::errs() << "Node: " << NodeName << ":" << Code << "\n";

@@ -3,7 +3,7 @@ project(root-migrate)
 
 option(travis_build "Used for building with travis" OFF)
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 17)
 
 find_package(LLVM REQUIRED)
 find_package(Clang REQUIRED)
